@@ -59,16 +59,17 @@ public class RenameCommitAction extends AnAction {
             return;
         }
 
-        // If there are no commit, prevent action execution
+        // If there are no commits, prevent action execution
         GitRepository repository = repositories.iterator().next();
         CompletableFuture<Void> result = new CompletableFuture<>();
         ApplicationManager.getApplication().executeOnPooledThread(() -> {
             try{
                 getLastCommitMessage(repository);
-                result.complete(null);
             }catch (Exception ex){
                 presentation.setEnabledAndVisible(false);
                 presentation.setVisible(true);
+            }finally {
+                result.complete(null);
             }
         });
 
